@@ -31,6 +31,16 @@ class App extends Component {
   getVehicles() {
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get("https://joes-autos.herokuapp.com/api/vehicles").then(res => {
+      let { data } = res // this destructures the data | equivalent to 'let data = res.data'
+      this.setState({
+        vehiclesToDisplay: data
+      })
+      toast.success("You deserve an Ensure!!!")
+    })
+      .catch(err => {
+        toast.error("Couldn't get vehicles")
+      })
   }
 
   getPotentialBuyers() {
@@ -41,6 +51,16 @@ class App extends Component {
   sellCar(id) {
     // axios (DELETE)
     // setState with response -> vehiclesToDisplay
+    axios.delete(`https://joes-autos.herokuapp.com/api/vehicles/${id}`)
+      .then(res => {
+        let vehicles = res.data.vehicles
+        this.setState({
+          vehiclesToDisplay: vehicles
+        })
+      })
+      .catch(err => {
+        console.log("err in delete", err)
+      })
   }
 
   filterByMake() {
@@ -58,8 +78,20 @@ class App extends Component {
   }
 
   updatePrice(priceChange, id) {
-    // axios (PUT)
+    console.log("price change", priceChange)
+    console.log("id", id)
+    // axios (PUT) | we are saying that we want to update something
     // setState with response -> vehiclesToDisplay
+    axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${priceChange}`)
+      .then(res => {
+        let vehicles = res.data.vehicles // equivalent to 'let { data } = vehicles'
+        this.setState({
+          vehiclesToDisplay: vehicles
+        })
+      })
+      .catch(err => {
+        console.log("err", err)
+      })
   }
 
   addCar() {
@@ -73,6 +105,17 @@ class App extends Component {
 
     // axios (POST)
     // setState with response -> vehiclesToDisplay
+
+    axios.post("https://joes-autos.herokuapp.com/api/vehicles", newCar)
+      .then(res => {
+        let vehicles = res.data.vehicles
+        this.setState({
+          vehiclesToDisplay: vehicles
+        })
+      })
+      .catch(err => {
+        console.log("err", err)
+      })
   }
 
   addBuyer() {
